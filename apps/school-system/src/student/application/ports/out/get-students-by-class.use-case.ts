@@ -1,5 +1,5 @@
 import { StudentModel } from '../../../domain/student.model';
 
-export abstract class GetStudentsByClass {
-  abstract execute(class_id: string): Promise<StudentModel[]>;
+export abstract class StudentRepositoryPort {
+  abstract getStudentsByClass(class_id: string): Promise<StudentModel[]>;
 }
