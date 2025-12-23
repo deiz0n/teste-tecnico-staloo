@@ -6,7 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { StudentModel } from '../../../../domain/student.model';
 
 @Injectable()
-export class TypeOrmClassAdapter implements StudentRepositoryPort {
+export class TypeOrmStudentAdapter implements StudentRepositoryPort {
   constructor(
     @InjectRepository(StudentEntity)
     private readonly repository: Repository<StudentEntity>,
