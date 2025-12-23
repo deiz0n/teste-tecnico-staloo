@@ -1,5 +1,5 @@
-import { Class } from '../../../domain/class.model';
+import { ClassModel } from '../../../domain/class.model';
 
 export abstract class GetAllClassesUseCase {
-  abstract execute(): Promise<Class[]>;
+  abstract execute(): Promise<ClassModel[]>;
 }

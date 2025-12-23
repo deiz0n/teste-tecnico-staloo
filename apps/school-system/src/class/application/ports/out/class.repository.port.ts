@@ -1,5 +1,5 @@
-import { Class } from '../../../domain/class.model';
+import { ClassModel } from '../../../domain/class.model';
 
 export abstract class ClassRepositoryPort {
-  abstract getAllClasses(): Promise<Class[]>;
+  abstract getAllClasses(): Promise<ClassModel[]>;
 }

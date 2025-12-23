@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
-import { Class } from '../../../../domain/class.model';
+import { ClassModel } from '../../../../domain/class.model';
 
 @Entity('tb_class')
 export class ClassEntity {
@@ -12,15 +12,15 @@ export class ClassEntity {
   @Column()
   location: string;
 
-  static fromDomain(domain: Class): ClassEntity {
+  static fromDomain(classModel: ClassModel): ClassEntity {
     const entity = new ClassEntity();
-    entity.id = domain.id;
-    entity.name = domain.name;
-    entity.location = domain.location;
+    entity.id = classModel.id;
+    entity.name = classModel.name;
+    entity.location = classModel.location;
     return entity;
   }
 
-  toDomain(): Class {
-    return new Class(this.id, this.name, this.location);
+  toDomain(): ClassModel {
+    return new ClassModel(this.id, this.name, this.location);
   }
 }
