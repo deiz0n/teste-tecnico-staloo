@@ -1,4 +1,4 @@
-export class Student {
+export class StudentModel {
   constructor(
     public readonly id: string,
     public name: string,
