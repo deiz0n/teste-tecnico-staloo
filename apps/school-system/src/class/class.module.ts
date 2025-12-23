@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ClassController } from './infrastructure/adapters/int/web/class.controller';
+import { ClassController } from './infrastructure/adapters/in/web/class.controller';
 import { GetAllClassesUseCase } from './application/ports/in/get-all-classes.use-case';
 import { GetAllClassesService } from './application/services/get-all-classes.service';
 import { ClassRepositoryPort } from './application/ports/out/class.repository.port';
