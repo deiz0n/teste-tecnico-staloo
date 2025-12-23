@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, PrimaryColumn } from 'typeorm';
 import { StudentModel } from '../../../../domain/student.model';
+import { ClassEntity } from '../../../../../class/infrastructure/adapters/out/persistence/class.entity';
 
 @Entity('tb_student')
 export class StudentEntity {
@@ -17,6 +18,9 @@ export class StudentEntity {
 
   @Column()
   dateBirth: Date;
+
+  @ManyToMany(() => ClassEntity, (classEntity) => classEntity.students)
+  classes: ClassEntity[];
 
   static fromDomain(studentModel: StudentModel): StudentEntity {
     const entity = new StudentEntity();
