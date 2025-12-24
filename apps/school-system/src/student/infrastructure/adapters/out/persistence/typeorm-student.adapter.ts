@@ -17,7 +17,7 @@ export class TypeOrmStudentAdapter implements StudentRepositoryPort {
       where: {
         classes: { id: class_id },
       },
-      relations: ['student'],
+      relations: ['classes'],
     });
   }
 }
