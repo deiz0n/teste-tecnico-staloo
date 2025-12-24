@@ -1,0 +1,40 @@
+networks:
+  school-system-network:
+    driver: bridge
+  service-notes-network:
+    driver: bridge
+
+volumes:
+  school-system-data:
+  service-notes-data:
+
+services:
+  school-system-database:
+    container_name: school-system-database-pg
+    image: postgres:16-alpine 
+    environment:
+      POSTGRES_USER: ${SCHOOL_SYSTEM_DB_USER}
+      POSTGRES_PASSWORD: ${SCHOOL_SYSTEM_DB_PASSWORD}
+      POSTGRES_DB: ${SCHOOL_SYSTEM_DB}
+      POSTGRES_HOST_AUTH_METHOD: ${SCHOOL_SYSTEM_HOST_AUTH_METHOD}
+    ports:
+      - "${SCHOOL_SYSTEM_DB_PORT}:5432"
+    volumes:
+      - school-system-data:/var/lib/postgresql/data
+    networks:
+      - school-system-network
+
+  service-notes-database:
+    container_name: service-notes-database-pg
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${SERVICE_NOTES_DB_USER}
+      POSTGRES_PASSWORD: ${SERVICE_NOTES_DB_PASSWORD}
+      POSTGRES_DB: ${SERVICE_NOTES_DB}
+      POSTGRES_HOST_AUTH_METHOD: ${SERVICE_NOTES_HOST_AUTH_METHOD}
+    ports:
+      - "${SERVICE_NOTES_DB_PORT}:5432"
+    volumes:
+      - service-notes-data:/var/lib/postgresql/data
+    networks:
+      - service-notes-network
