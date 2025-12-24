@@ -1,4 +1,11 @@
-import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  ParseUUIDPipe,
+  Query,
+} from '@nestjs/common';
 import { GetStudentsByClassUseCase } from '../../../../application/ports/in/get-students-by-class.use-case';
 
 @Controller('students')
@@ -9,7 +16,7 @@ export class StudentController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async getByClass(@Query('classId') classId: string) {
+  async getByClass(@Query('classId', ParseUUIDPipe) classId: string) {
     const data = await this.getStudentsByClassUseCase.execute(classId);
     return {
       timestamp: new Date().toISOString(),
