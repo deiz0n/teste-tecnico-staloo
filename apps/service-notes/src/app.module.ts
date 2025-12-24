@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SubjectModule } from './subject/subject.module';
+import { ExamModule } from './exam/exam.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { SubjectModule } from './subject/subject.module';
       }),
     }),
     SubjectModule,
+    ExamModule,
   ],
   controllers: [],
   providers: [],
