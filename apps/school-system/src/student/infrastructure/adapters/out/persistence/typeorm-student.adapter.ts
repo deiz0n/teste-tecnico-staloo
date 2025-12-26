@@ -12,12 +12,14 @@ export class TypeOrmStudentAdapter implements StudentRepositoryPort {
     private readonly repository: Repository<StudentEntity>,
   ) {}
 
-  getStudentsByClass(classId: string): Promise<StudentModel[]> {
-    return this.repository.find({
+  async getStudentsByClass(classId: string): Promise<StudentModel[]> {
+    const students = await this.repository.find({
       where: {
         classes: { id: classId },
       },
       relations: ['classes'],
     });
+
+    return students.map((StudentEntity) => StudentEntity.toDomain());
   }
 }
