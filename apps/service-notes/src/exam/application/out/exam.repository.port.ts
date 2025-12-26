@@ -1,3 +1,5 @@
-export abstract class ExamRepositoryPort<T> {
-  abstract getStudentReport(studentId: string): Promise<T>;
+import { ExamModel } from '../../domain/exam.model';
+
+export abstract class ExamRepositoryPort {
+  abstract getAllByStudent(studentId: string): Promise<ExamModel[]>;
 }
