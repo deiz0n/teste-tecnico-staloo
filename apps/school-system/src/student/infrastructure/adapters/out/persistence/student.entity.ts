@@ -22,16 +22,6 @@ export class StudentEntity {
   @ManyToMany(() => ClassEntity, (classEntity) => classEntity.students)
   classes: ClassEntity[];
 
-  static fromDomain(studentModel: StudentModel): StudentEntity {
-    const entity = new StudentEntity();
-    entity.id = studentModel.id;
-    entity.name = studentModel.name;
-    entity.cpf = studentModel.cpf;
-    entity.address = studentModel.address;
-    entity.dateBirth = studentModel.dateBirth;
-    return entity;
-  }
-
   toDomain(): StudentModel {
     return new StudentModel(
       this.id,

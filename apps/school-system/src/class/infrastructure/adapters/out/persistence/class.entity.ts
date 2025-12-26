@@ -27,14 +27,6 @@ export class ClassEntity {
   })
   students: StudentEntity[];
 
-  static fromDomain(classModel: ClassModel): ClassEntity {
-    const entity = new ClassEntity();
-    entity.id = classModel.id;
-    entity.name = classModel.name;
-    entity.location = classModel.location;
-    return entity;
-  }
-
   toDomain(): ClassModel {
     return new ClassModel(this.id, this.name, this.location);
   }
