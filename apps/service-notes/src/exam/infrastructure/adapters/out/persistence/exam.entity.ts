@@ -1,5 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import { SubjectEntity } from '../../../../../subject/infrastructure/adapters/out/persistence/subject.entity';
+import { ExamModel } from '../../../../domain/exam.model';
 
 @Entity('tb_exam')
 export class ExamEntity {
@@ -17,4 +18,14 @@ export class ExamEntity {
 
   @ManyToOne(() => SubjectEntity, (subjectEntity) => subjectEntity.exams)
   subject: SubjectEntity;
+
+  toDomain(): ExamModel {
+    return new ExamModel(
+      this.id,
+      this.score,
+      this.date,
+      this.student_id,
+      this.subject,
+    );
+  }
 }
