@@ -3,6 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SubjectModule } from './subject/subject.module';
 import { ExamModule } from './exam/exam.module';
+import { ExamEntity } from './exam/infrastructure/adapters/out/persistence/exam.entity';
+import { SubjectEntity } from './subject/infrastructure/adapters/out/persistence/subject.entity';
 
 @Module({
   imports: [
@@ -17,7 +19,7 @@ import { ExamModule } from './exam/exam.module';
         username: configService.get<string>('SERVICE_NOTES_DB_USER'),
         password: configService.get<string>('SERVICE_NOTES_DB_PASSWORD'),
         database: configService.get<string>('SERVICE_NOTES_DB'),
-        entities: [],
+        entities: [ExamEntity, SubjectEntity],
         synchronize: true,
       }),
     }),
