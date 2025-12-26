@@ -9,7 +9,7 @@ export class GetStudentsByClassService implements GetStudentsByClassUseCase {
     private readonly repository: StudentRepositoryPort,
   ) {}
 
-  async execute(class_id: string): Promise<StudentModel[]> {
-    return this.repository.getStudentsByClass(class_id);
+  async execute(classId: string): Promise<StudentModel[]> {
+    return this.repository.getStudentsByClass(classId);
   }
 }
