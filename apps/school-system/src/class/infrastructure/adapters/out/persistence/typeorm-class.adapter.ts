@@ -12,7 +12,8 @@ export class TypeOrmClassAdapter implements ClassRepositoryPort {
     private readonly repository: Repository<ClassEntity>,
   ) {}
 
-  getAllClasses(): Promise<ClassModel[]> {
-    return this.repository.find();
+  async getAllClasses(): Promise<ClassModel[]> {
+    const classes = await this.repository.find();
+    return classes.map((classEntity) => classEntity.toDomain());
   }
 }
