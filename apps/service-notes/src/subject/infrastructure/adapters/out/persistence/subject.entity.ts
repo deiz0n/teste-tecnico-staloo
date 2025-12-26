@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { ExamEntity } from '../../../../../exam/infrastructure/adapters/out/persistence/exam.entity';
+import { SubjectModel } from '../../../../domain/subject.model';
 
 @Entity('tb_subject')
 export class SubjectEntity {
@@ -14,4 +15,8 @@ export class SubjectEntity {
 
   @OneToMany(() => ExamEntity, (ExamEntity) => ExamEntity.subject)
   exams: ExamEntity[];
+
+  toDomain(): SubjectModel {
+    return new SubjectModel(this.id, this.name, this.workload, this.exams);
+  }
 }
