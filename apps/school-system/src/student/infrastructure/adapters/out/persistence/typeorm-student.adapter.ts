@@ -22,4 +22,18 @@ export class TypeOrmStudentAdapter implements StudentRepositoryPort {
 
     return students.map((StudentEntity) => StudentEntity.toDomain());
   }
+
+  async getStudentById(studentId: string): Promise<StudentModel | null> {
+    const student = await this.repository.findOne({
+      where: { id: studentId },
+    });
+
+    return new StudentModel(
+      student.id,
+      student.name,
+      student.cpf,
+      student.address,
+      student.dateBirth,
+    );
+  }
 }
