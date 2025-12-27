@@ -5,6 +5,7 @@ import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { SubjectDto } from '../../../../domain/dto/subject.dto';
 import { ExternalSubjectResponseInterface } from '../../../../domain/interfaces/external-subject-response.interface';
+import { ExamDto } from '../../../../domain/dto/exam.dto';
 
 @Injectable()
 export class HttpNotesServiceAdapter implements NotesServiceClientPort {
@@ -33,7 +34,14 @@ export class HttpNotesServiceAdapter implements NotesServiceClientPort {
       if (!data) return [];
 
       return data.map(
-        (item) => new SubjectDto(item.name, item.workload, item.exams),
+        (item) =>
+          new SubjectDto(
+            item.name,
+            item.workload,
+            item.exams.map(
+              (exam) => new ExamDto(exam.id, exam.score, exam.date),
+            ),
+          ),
       );
     } catch (e) {
       const errorMessage =
