@@ -23,6 +23,6 @@ export class GenerateReportCardService implements GenerateReportCardUseCase {
 
     const exams = await this.httpClient.generateReportCard(studentId);
 
-    return new ReportCardDto(student.id, student.name, exams);
+    return new ReportCardDto(student.name, exams);
   }
 }
