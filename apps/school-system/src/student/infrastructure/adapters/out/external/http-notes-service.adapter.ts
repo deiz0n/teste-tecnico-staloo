@@ -16,7 +16,7 @@ export class HttpNotesServiceAdapter implements NotesServiceClientPort {
   ) {
     const port = this.configService.getOrThrow<string>('SERVICE_NOTES_PORT');
 
-    this.notesServiceUrl = `http://localhost:${port}/exams`;
+    this.notesServiceUrl = `http://localhost:${port}/subjects`;
   }
 
   async generateReportCard(studentId: string): Promise<SubjectDto[]> {
