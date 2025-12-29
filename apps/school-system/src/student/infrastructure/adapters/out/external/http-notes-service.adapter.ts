@@ -15,9 +15,10 @@ export class HttpNotesServiceAdapter implements NotesServiceClientPort {
     private readonly configService: ConfigService,
     private readonly httpService: HttpService,
   ) {
-    const port = this.configService.getOrThrow<string>('SERVICE_NOTES_PORT');
+    const port = this.configService.get<string>('SERVICE_NOTES_PORT');
+    const host = this.configService.get<string>('SERVICE_NOTES_HOST');
 
-    this.notesServiceUrl = `http://localhost:${port}/subjects`;
+    this.notesServiceUrl = `http://${host}:${port}/subjects`;
   }
 
   async generateReportCard(studentId: string): Promise<SubjectDto[]> {
