@@ -3,6 +3,8 @@ networks:
     driver: bridge
   service-notes-network:
     driver: bridge
+  network-microservices:
+    driver: bridge
 
 volumes:
   school-system-data:
@@ -11,18 +13,43 @@ volumes:
 services:
   school-system-database:
     container_name: school-system-database-pg
-    image: postgres:16-alpine 
+    image: postgres:16-alpine
     environment:
       POSTGRES_USER: ${SCHOOL_SYSTEM_DB_USER}
       POSTGRES_PASSWORD: ${SCHOOL_SYSTEM_DB_PASSWORD}
       POSTGRES_DB: ${SCHOOL_SYSTEM_DB}
-      POSTGRES_HOST_AUTH_METHOD: ${SCHOOL_SYSTEM_HOST_AUTH_METHOD}
+      POSTGRES_HOST_AUTH_METHOD: trust
     ports:
       - "${SCHOOL_SYSTEM_DB_PORT}:5432"
     volumes:
       - school-system-data:/var/lib/postgresql/data
     networks:
       - school-system-network
+
+  school-system-api:
+    build:
+      context: .
+      dockerfile: apps/school-system/Dockerfile
+    image: school-system-img
+    container_name: school-system-api
+    ports:
+      - "${SCHOOL_SYSTEM_PORT}:3000"
+    env_file:
+      - .env
+    environment:
+      - SCHOOL_SYSTEM_DB_PORT=5432
+      - SCHOOL_SYSTEM_DB_HOST=school-system-database
+      - SCHOOL_SYSTEM_DB=school_system
+      - SCHOOL_SYSTEM_HOST_AUTH_METHOD=trust
+    depends_on:
+      - school-system-database
+    command: npm run start:dev school-system
+    networks:
+      - school-system-network
+      - network-microservices
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
 
   service-notes-database:
     container_name: service-notes-database-pg
@@ -31,10 +58,35 @@ services:
       POSTGRES_USER: ${SERVICE_NOTES_DB_USER}
       POSTGRES_PASSWORD: ${SERVICE_NOTES_DB_PASSWORD}
       POSTGRES_DB: ${SERVICE_NOTES_DB}
-      POSTGRES_HOST_AUTH_METHOD: ${SERVICE_NOTES_HOST_AUTH_METHOD}
+      POSTGRES_HOST_AUTH_METHOD: trus
     ports:
       - "${SERVICE_NOTES_DB_PORT}:5432"
     volumes:
       - service-notes-data:/var/lib/postgresql/data
     networks:
       - service-notes-network
+
+  service-notes-api:
+    build:
+      context: .
+      dockerfile: apps/service-notes/Dockerfile
+    image: service-notes-img
+    container_name: service-notes-api
+    ports:
+      - "${SERVICE_NOTES_PORT}:3000"
+    env_file:
+      - .env
+    environment:
+      - SERVICE_NOTES_DB_PORT=5432
+      - SERVICE_NOTES_DB_HOST=service-notes-database
+      - SERVICE_NOTES_DB=service_notes
+      - SERVICE_NOTES_HOST_AUTH_METHOD=trust
+    depends_on:
+      - service-notes-database
+    command: npm run start:dev service-notes
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - service-notes-network
+      - network-microservices
