@@ -20,13 +20,7 @@ export class ExamEntity {
   subject: SubjectEntity;
 
   toDomain(): ExamModel {
-    return new ExamModel(
-      this.id,
-      this.score,
-      this.date,
-      this.student_id,
-      this.subject,
-    );
+    return new ExamModel(this.id, this.score, this.date, this.student_id, null);
   }
 
   static fromDomain(model: ExamModel): ExamEntity {
@@ -35,8 +29,11 @@ export class ExamEntity {
     entity.score = model.score;
     entity.date = model.date;
     entity.student_id = model.student_id;
-
-    if (model.subject) entity.subject = SubjectEntity.fromDomain(model.subject);
+    if (model.subject) {
+      const subjectRef = new SubjectEntity();
+      subjectRef.id = model.subject.id;
+      entity.subject = subjectRef;
+    }
 
     return entity;
   }
