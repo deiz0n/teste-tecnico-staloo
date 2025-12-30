@@ -6,7 +6,7 @@ import {
   ManyToOne,
   PrimaryColumn,
 } from 'typeorm';
-import { SubjectEntity } from '../../../../subject/infrastructure/adapters/out/persistence/subject.entity';
+import { SubjectEntity } from '../../../../../subject/infrastructure/adapters/out/persistence/subject.entity';
 
 @Entity('tb_academic_record')
 @Index(['student_id', 'subject'])
