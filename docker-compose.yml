@@ -17,7 +17,7 @@ services:
     environment:
       POSTGRES_USER: ${SCHOOL_SYSTEM_DB_USER}
       POSTGRES_PASSWORD: ${SCHOOL_SYSTEM_DB_PASSWORD}
-      POSTGRES_DB: ${SCHOOL_SYSTEM_DB}
+      POSTGRES_DB: school_system
       POSTGRES_HOST_AUTH_METHOD: trust
     ports:
       - "${SCHOOL_SYSTEM_DB_PORT}:5432"
@@ -57,8 +57,8 @@ services:
     environment:
       POSTGRES_USER: ${SERVICE_NOTES_DB_USER}
       POSTGRES_PASSWORD: ${SERVICE_NOTES_DB_PASSWORD}
-      POSTGRES_DB: ${SERVICE_NOTES_DB}
-      POSTGRES_HOST_AUTH_METHOD: trus
+      POSTGRES_DB: service_notes
+      POSTGRES_HOST_AUTH_METHOD: trust
     ports:
       - "${SERVICE_NOTES_DB_PORT}:5432"
     volumes:
