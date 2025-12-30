@@ -12,7 +12,7 @@ export class TypeOrmAcademicRecordAdapter implements AcademicReportRepositoryPor
     private readonly repository: Repository<AcademicRecordEntity>,
   ) {}
 
-  async getStudentReportCardUseCase(
+  async getStudentReportCard(
     studentId: string,
   ): Promise<AcademicRecordModel[]> {
     const academicRecords = await this.repository
