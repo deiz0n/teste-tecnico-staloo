@@ -19,4 +19,13 @@ export class SubjectEntity {
   toDomain(): SubjectModel {
     return new SubjectModel(this.id, this.name, this.workload, this.exams);
   }
+
+  static fromDomain(model: SubjectModel): SubjectEntity {
+    const entity = new SubjectEntity();
+    entity.id = model.id;
+    entity.name = model.name;
+    entity.workload = model.workload;
+    entity.exams = model.exams?.map((exam) => ExamEntity.fromDomain(exam));
+    return entity;
+  }
 }

@@ -28,4 +28,16 @@ export class ExamEntity {
       this.subject,
     );
   }
+
+  static fromDomain(model: ExamModel): ExamEntity {
+    const entity = new ExamEntity();
+    entity.id = model.id;
+    entity.score = model.score;
+    entity.date = model.date;
+    entity.student_id = model.student_id;
+
+    if (model.subject) entity.subject = SubjectEntity.fromDomain(model.subject);
+
+    return entity;
+  }
 }
