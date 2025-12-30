@@ -5,6 +5,7 @@ import { SubjectModule } from './subject/subject.module';
 import { ExamModule } from './exam/exam.module';
 import { ExamEntity } from './exam/infrastructure/adapters/out/persistence/exam.entity';
 import { SubjectEntity } from './subject/infrastructure/adapters/out/persistence/subject.entity';
+import { AcademicRecordModule } from './academic-record/academic-record.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { SubjectEntity } from './subject/infrastructure/adapters/out/persistence
     }),
     SubjectModule,
     ExamModule,
+    AcademicRecordModule,
   ],
   controllers: [],
   providers: [],
