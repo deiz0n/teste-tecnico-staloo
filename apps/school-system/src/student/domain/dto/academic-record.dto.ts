@@ -1,8 +1,8 @@
-import { SubjectDto } from './subject.dto';
+import { ResponseServiceNotesDto } from './response-service-notes.dto';
 
 export class AcademicRecordDto {
   constructor(
-    public readonly studentName: string,
-    public readonly subjects: SubjectDto[],
+    public readonly studantName: string,
+    public readonly academicRecords: ResponseServiceNotesDto[],
   ) {}
 }
