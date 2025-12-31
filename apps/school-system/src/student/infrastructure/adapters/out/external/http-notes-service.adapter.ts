@@ -3,9 +3,9 @@ import { NotesServiceClientPort } from '../../../../application/ports/out/notes-
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import { SubjectDto } from '../../../../domain/dto/subject.dto';
 import { ExternalAcademicRecordInterface } from '../../../../domain/interfaces/external-academic-record-response.interface';
-import { ExamDto } from '../../../../domain/dto/exam.dto';
+import { ResponseServiceNotesDto } from '../../../../domain/dto/response-service-notes.dto';
+import { SubjectDto } from '../../../../domain/dto/subject.dto';
 
 @Injectable()
 export class HttpNotesServiceAdapter implements NotesServiceClientPort {
@@ -15,20 +15,18 @@ export class HttpNotesServiceAdapter implements NotesServiceClientPort {
     private readonly configService: ConfigService,
     private readonly httpService: HttpService,
   ) {
-    const port = this.configService.get<string>('SERVICE_NOTES_PORT');
     const host = this.configService.get<string>('SERVICE_NOTES_HOST');
 
-    this.notesServiceUrl = `http://${host}:${port}/subjects`;
+    this.notesServiceUrl = `http://${host}:3000/academic-records/student/`;
   }
 
-  async generateReportCard(studentId: string): Promise<SubjectDto[]> {
+  async generateReportCard(
+    studentId: string,
+  ): Promise<ResponseServiceNotesDto[]> {
     try {
       const { data } = await firstValueFrom(
         this.httpService.get<ExternalAcademicRecordInterface[]>(
-          this.notesServiceUrl,
-          {
-            params: { studentId },
-          },
+          `${this.notesServiceUrl}${studentId}`,
         ),
       );
 
@@ -36,12 +34,12 @@ export class HttpNotesServiceAdapter implements NotesServiceClientPort {
 
       return data.map(
         (item) =>
-          new SubjectDto(
-            item.name,
-            item.workload,
-            item.exams.map(
-              (exam) => new ExamDto(exam.id, exam.score, exam.date),
+          new ResponseServiceNotesDto(
+            item.subject.map(
+              (item) => new SubjectDto(item.name, item.workload, item.exams),
             ),
+            item.finalGrade,
+            item.passed,
           ),
       );
     } catch (e) {
