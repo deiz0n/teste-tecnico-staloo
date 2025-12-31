@@ -19,7 +19,7 @@ export class HttpNotesServiceAdapter implements NotesServiceClientPort {
     this.notesServiceUrl = `http://${host}:3000/academic-records/student/`;
   }
 
-  async generateReportCard(
+  async getStudentReportCard(
     studentId: string,
   ): Promise<ResponseServiceNotesDto[]> {
     try {
