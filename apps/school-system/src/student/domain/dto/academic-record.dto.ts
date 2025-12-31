@@ -1,6 +1,6 @@
 import { SubjectDto } from './subject.dto';
 
-export class ReportCardDto {
+export class AcademicRecordDto {
   constructor(
     public readonly studentName: string,
     public readonly subjects: SubjectDto[],

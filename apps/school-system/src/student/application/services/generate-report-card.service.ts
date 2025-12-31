@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { ReportCardDto } from '../../domain/dto/report-card.dto';
+import { AcademicRecordDto } from '../../domain/dto/academic-record.dto';
 import { GenerateReportCardUseCase } from '../ports/in/generate-report-card.use-case';
 import { StudentRepositoryPort } from '../ports/out/student.repository.port';
 import { NotesServiceClientPort } from '../ports/out/notes-service.client.port';
@@ -13,7 +13,7 @@ export class GenerateReportCardService implements GenerateReportCardUseCase {
     private readonly httpClient: NotesServiceClientPort,
   ) {}
 
-  async execute(studentId: string): Promise<ReportCardDto> {
+  async execute(studentId: string): Promise<AcademicRecordDto> {
     const student = await this.repository.getStudentById(studentId);
 
     if (!student)
@@ -23,6 +23,6 @@ export class GenerateReportCardService implements GenerateReportCardUseCase {
 
     const exams = await this.httpClient.generateReportCard(studentId);
 
-    return new ReportCardDto(student.name, exams);
+    return new AcademicRecordDto(student.name, exams);
   }
 }
