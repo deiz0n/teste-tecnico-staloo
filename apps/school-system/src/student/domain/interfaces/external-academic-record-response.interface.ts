@@ -1,7 +1,7 @@
-import { ExamDto } from '../dto/exam.dto';
+import { SubjectDto } from '../dto/subject.dto';
 
 export interface ExternalAcademicRecordInterface {
-  name: string;
-  workload: number;
-  exams: ExamDto[];
+  subject: SubjectDto[];
+  finalGrade: number;
+  passed: boolean;
 }
