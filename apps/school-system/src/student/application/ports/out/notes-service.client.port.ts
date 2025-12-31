@@ -1,5 +1,7 @@
-import { SubjectDto } from '../../../domain/dto/subject.dto';
+import { ResponseServiceNotesDto } from '../../../domain/dto/response-service-notes.dto';
 
 export abstract class NotesServiceClientPort {
-  abstract generateReportCard(studentId: string): Promise<SubjectDto[]>;
+  abstract generateReportCard(
+    studentId: string,
+  ): Promise<ResponseServiceNotesDto[]>;
 }
