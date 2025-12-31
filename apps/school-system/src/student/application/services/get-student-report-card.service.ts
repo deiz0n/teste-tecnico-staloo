@@ -1,11 +1,11 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { AcademicRecordDto } from '../../domain/dto/academic-record.dto';
-import { GenerateReportCardUseCase } from '../ports/in/generate-report-card.use-case';
 import { StudentRepositoryPort } from '../ports/out/student.repository.port';
 import { NotesServiceClientPort } from '../ports/out/notes-service.client.port';
+import { GetStudentReportCardUseCase } from '../ports/in/get-student-report-card.use-case';
 
 @Injectable()
-export class GenerateReportCardService implements GenerateReportCardUseCase {
+export class GetStudentReportCardService implements GetStudentReportCardUseCase {
   constructor(
     @Inject()
     private readonly repository: StudentRepositoryPort,

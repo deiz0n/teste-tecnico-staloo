@@ -9,15 +9,18 @@ import { GetStudentsByClassUseCase } from './application/ports/in/get-students-b
 import { NotesServiceClientPort } from './application/ports/out/notes-service.client.port';
 import { HttpNotesServiceAdapter } from './infrastructure/adapters/out/external/http-notes-service.adapter';
 import { HttpModule } from '@nestjs/axios';
-import { GenerateReportCardUseCase } from './application/ports/in/generate-report-card.use-case';
-import { GenerateReportCardService } from './application/services/generate-report-card.service';
+import { GetStudentReportCardUseCase } from './application/ports/in/get-student-report-card.use-case';
+import { GetStudentReportCardService } from './application/services/get-student-report-card.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([StudentEntity]), HttpModule],
   controllers: [StudentController],
   providers: [
     { provide: GetStudentsByClassUseCase, useClass: GetStudentsByClassService },
-    { provide: GenerateReportCardUseCase, useClass: GenerateReportCardService },
+    {
+      provide: GetStudentReportCardUseCase,
+      useClass: GetStudentReportCardService,
+    },
     { provide: StudentRepositoryPort, useClass: TypeOrmStudentAdapter },
     { provide: NotesServiceClientPort, useClass: HttpNotesServiceAdapter },
   ],
