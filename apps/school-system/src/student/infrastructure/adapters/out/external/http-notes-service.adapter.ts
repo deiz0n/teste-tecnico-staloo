@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { SubjectDto } from '../../../../domain/dto/subject.dto';
-import { ExternalSubjectResponseInterface } from '../../../../domain/interfaces/external-subject-response.interface';
+import { ExternalAcademicRecordInterface } from '../../../../domain/interfaces/external-academic-record-response.interface';
 import { ExamDto } from '../../../../domain/dto/exam.dto';
 
 @Injectable()
@@ -24,7 +24,7 @@ export class HttpNotesServiceAdapter implements NotesServiceClientPort {
   async generateReportCard(studentId: string): Promise<SubjectDto[]> {
     try {
       const { data } = await firstValueFrom(
-        this.httpService.get<ExternalSubjectResponseInterface[]>(
+        this.httpService.get<ExternalAcademicRecordInterface[]>(
           this.notesServiceUrl,
           {
             params: { studentId },
