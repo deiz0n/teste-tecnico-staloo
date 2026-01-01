@@ -23,6 +23,7 @@ import { AcademicRecordEntity } from './academic-record/infrastructure/adapters/
         database: configService.get<string>('SERVICE_NOTES_DB'),
         entities: [ExamEntity, SubjectEntity, AcademicRecordEntity],
         synchronize: true,
+        logging: true,
       }),
     }),
     SubjectModule,

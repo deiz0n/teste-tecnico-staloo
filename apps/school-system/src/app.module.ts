@@ -21,6 +21,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         database: configService.get<string>('SCHOOL_SYSTEM_DB'),
         entities: [ClassEntity, StudentEntity],
         synchronize: true,
+        logging: true,
       }),
     }),
     StudentModule,
