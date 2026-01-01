@@ -21,7 +21,7 @@ export class GetStudentReportCardService implements GetStudentReportCardUseCase 
         `The student with id: ${studentId} not found`,
       );
 
-    const exams = await this.httpClient.generateReportCard(studentId);
+    const exams = await this.httpClient.getStudentReportCard(studentId);
 
     return new AcademicRecordDto(student.name, exams);
   }
