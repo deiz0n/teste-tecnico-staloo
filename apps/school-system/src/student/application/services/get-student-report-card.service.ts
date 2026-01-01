@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { AcademicRecordDto } from '../../domain/dto/academic-record.dto';
 import { StudentRepositoryPort } from '../ports/out/student.repository.port';
-import { NotesServiceClientPort } from '../ports/out/notes-service.client.port';
+import { ServiceNotesClientPort } from '../ports/out/notes-service.client.port';
 import { GetStudentReportCardUseCase } from '../ports/in/get-student-report-card.use-case';
 
 @Injectable()
@@ -9,8 +9,8 @@ export class GetStudentReportCardService implements GetStudentReportCardUseCase 
   constructor(
     @Inject()
     private readonly repository: StudentRepositoryPort,
-    @Inject(NotesServiceClientPort)
-    private readonly httpClient: NotesServiceClientPort,
+    @Inject(ServiceNotesClientPort)
+    private readonly httpClient: ServiceNotesClientPort,
   ) {}
 
   async execute(studentId: string): Promise<AcademicRecordDto> {

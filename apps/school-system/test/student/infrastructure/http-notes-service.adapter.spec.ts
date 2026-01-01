@@ -4,12 +4,12 @@ import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { of, throwError } from 'rxjs';
 import { randomUUID } from 'crypto';
-import { HttpNotesServiceAdapter } from '../../../src/student/infrastructure/adapters/out/external/http-notes-service.adapter';
+import { HttpServiceNotesAdapter } from '../../../src/student/infrastructure/adapters/out/external/http-notes-service.adapter';
 import { ExternalAcademicRecordInterface } from '../../../src/student/domain/interfaces/external-academic-record-response.interface';
 import { ResponseServiceNotesDto } from '../../../src/student/domain/dto/response-service-notes.dto';
 
-describe('HttpNotesServiceAdapter', () => {
-  let adapter: HttpNotesServiceAdapter;
+describe('HttpServiceNotesAdapter', () => {
+  let adapter: HttpServiceNotesAdapter;
 
   const mockConfigService = {
     get: jest.fn().mockReturnValue('localhost'),
@@ -22,7 +22,7 @@ describe('HttpNotesServiceAdapter', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        HttpNotesServiceAdapter,
+        HttpServiceNotesAdapter,
         {
           provide: ConfigService,
           useValue: mockConfigService,
@@ -34,7 +34,7 @@ describe('HttpNotesServiceAdapter', () => {
       ],
     }).compile();
 
-    adapter = module.get<HttpNotesServiceAdapter>(HttpNotesServiceAdapter);
+    adapter = module.get<HttpServiceNotesAdapter>(HttpServiceNotesAdapter);
 
     jest.clearAllMocks();
   });
@@ -133,7 +133,7 @@ describe('HttpNotesServiceAdapter', () => {
 
       const module: TestingModule = await Test.createTestingModule({
         providers: [
-          HttpNotesServiceAdapter,
+          HttpServiceNotesAdapter,
           {
             provide: ConfigService,
             useValue: mockConfigService,
@@ -145,8 +145,8 @@ describe('HttpNotesServiceAdapter', () => {
         ],
       }).compile();
 
-      const newAdapter = module.get<HttpNotesServiceAdapter>(
-        HttpNotesServiceAdapter,
+      const newAdapter = module.get<HttpServiceNotesAdapter>(
+        HttpServiceNotesAdapter,
       );
 
       await newAdapter.getStudentReportCard(studentId);

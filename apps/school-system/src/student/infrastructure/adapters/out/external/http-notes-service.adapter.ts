@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { NotesServiceClientPort } from '../../../../application/ports/out/notes-service.client.port';
+import { ServiceNotesClientPort } from '../../../../application/ports/out/notes-service.client.port';
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
@@ -7,7 +7,7 @@ import { ExternalAcademicRecordInterface } from '../../../../domain/interfaces/e
 import { ResponseServiceNotesDto } from '../../../../domain/dto/response-service-notes.dto';
 
 @Injectable()
-export class HttpNotesServiceAdapter implements NotesServiceClientPort {
+export class HttpServiceNotesAdapter implements ServiceNotesClientPort {
   private readonly notesServiceUrl: string;
 
   constructor(
