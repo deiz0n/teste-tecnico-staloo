@@ -1,98 +1,222 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Desafio Técnico Staloo
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Índice
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+1. [Tecnologias Utilizadas](#tecnologias-utilizadas)
+2. [Arquitetura](#arquitetura)
+3. [Pré-requisitos](#pré-requisitos)
+4. [Configurações Iniciais](#configurações-iniciais)
+5. [Executando a API](#executando-a-api)
+6. [Testes](#testes)
+7. [Capturas de tela](#capturas-de-tela)
 
-## Description
+## Tecnologias Utilizadas
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+<img src="https://skillicons.dev/icons?i=ts,nestjs,postgresql,docker,jest" alt="Tecnologias usadas"/>
 
-## Project setup
+## Arquitetura
 
-```bash
-$ npm install
+### Microserviços
+
+**OBS:** _A comunicação entre os microservices é realizada através de requisições HTTP_
+
+A arquitetura aplicada no projeto foi a hexagonal, junto com a arquitetura modular no Nest.js.
+Cada módulo é dividido em três camadas principais: **domain**, **application** e **infrastructure**
+![Arquitetura do Microservice School System](./docs/arquitetura.svg)
+
+#### 1. Domain
+
+Camada central da aplicação que contém as **regras de negócio** e **entidades**. É independente de frameworks, bancos de dados ou qualquer tecnologia externa.
+
+```
+student/
+└── domain/
+    ├── student.model.ts
+    ├── dto/
+    └── interfaces/
 ```
 
-## Compile and run the project
+#### 2. Application
 
-```bash
-# development
-$ npm run start
+Camada que orquestra o fluxo da aplicação através de **casos de uso** e define **portas** para comunicação com o mundo externo.
 
-# watch mode
-$ npm run start:dev
+- **Ports (in):** Classes abstratas que definem como a aplicação pode ser usada (casos de uso)
+- **Ports (out):** Classes abstratas que definem como a aplicação se comunica com serviços externos
+- **Services:** Implementação dos casos de uso
 
-# production mode
-$ npm run start:prod
+```
+student/
+└── application/
+    ├── ports/
+    │   ├── in/
+    │   │   ├── get-student-report-card.use-case.ts
+    │   │   └── get-students-by-class.use-case.ts
+    │   └── out/
+    │       ├── student.repository.port.ts
+    │       └── service-notes-client.port.ts
+    └── services/
+        ├── get-student-report-card.service.ts
+        └── get-students-by-class.service.ts
 ```
 
-## Run tests
+#### 3. Infrastructure
 
-```bash
-# unit tests
-$ npm run test
+Camada que contém as **implementações concretas** das portas definidas na camada de aplicação. Aqui ficam os **adapters** que conectam a aplicação ao mundo externo.
 
-# e2e tests
-$ npm run test:e2e
+- **Adapters (in):** Recebem requisições externas (controllers HTTP)
+- **Adapters (out):** Comunicam com serviços externos (banco de dados, APIs)
 
-# test coverage
-$ npm run test:cov
+```
+student/
+└── infrastructure/
+    └── adapters/
+        ├── in/
+        │   └── web/
+        │       └── student.controller.ts
+        └── out/
+            ├── persistence/
+            │   ├── student.entity.ts
+            │   └── typeorm-student.adapter.ts
+            └── external/
+                └── http-service-notes.adapter.ts
 ```
 
-## Deployment
+### Fluxo de dados
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Para a implementação da arquitetura, é necessário criar providers personalizados. Eles permitem que realizemos a injeção de dependência das classes abstratas ou interfaces, seguindo o princípio de inversão de dependência.
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+No NestJS, configuramos isso em cada módulo. Exemplo do `student.module.ts`:
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+```
+  providers: [
+    { provide: GetStudentsByClassUseCase, useClass: GetStudentsByClassService },
+    {
+      provide: GetStudentReportCardUseCase,
+      useClass: GetStudentReportCardService,
+    },
+    { provide: StudentRepositoryPort, useClass: TypeOrmStudentAdapter },
+    { provide: ServiceNotesClientPort, useClass: HttpServiceNotesAdapter },
+  ],
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Definimos um token, e toda vez que esse token é injetado, a classe concreta é utilizada.
 
-## Resources
+![Fluxo de dados do módulo Student](./docs/fluxo.svg)
 
-Check out a few resources that may come in handy when working with NestJS:
+### Banco de Dados
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Foi optado pela criação de um banco de dados para cada microserviço, tornando-os independentes.
 
-## Support
+![Bancos de dados](./docs/bancos.svg)
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Para acessar a documentação completa, [clique aqui](https://lucid.app/lucidchart/54d00639-0c33-460f-960b-964a0e616cc2/edit?viewport_loc=-3347%2C2637%2C7069%2C3432%2C0_0&invitationId=inv_c14fb5c8-ae9c-4b90-b1c3-7d1b5891be61).
 
-## Stay in touch
+## Pré-requisitos
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Para executar este projeto, você precisará ter instalado:
 
-## License
+- **Git**
+- **Node.js 18+**
+- **npm** ou **yarn**
+- **Docker e Docker Compose**
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## Configurações Iniciais
+
+### 1. Clonando o Repositório
+
+Clone o repositório executando o seguinte comando no terminal:
+
+```bash
+git clone https://github.com/deiz0n/teste-tecnico-staloo
+cd teste-tecnico-staloo
+```
+
+### 2. Configurando as Variáveis de Ambiente
+
+Crie um arquivo `.env` com base no arquivo `.env.example`:
+
+```bash
+cp .env.example .env
+```
+
+Preencha as variáveis conforme necessário:
+
+```env
+# Microservice School System
+SCHOOL_SYSTEM_PORT=3000
+SCHOOL_SYSTEM_DB_PORT=5432
+SCHOOL_SYSTEM_DB_USER=dudu1
+SCHOOL_SYSTEM_DB_PASSWORD=1234567
+
+# Microservice Service Notes
+SERVICE_NOTES_PORT=3001
+SERVICE_NOTES_DB_PORT=5433
+SERVICE_NOTES_DB_USER=dudu2
+SERVICE_NOTES_DB_PASSWORD=1234567
+```
+
+**⚠️ IMPORTANTE:**
+
+- Certifique-se de preencher todos os campos para garantir o correto funcionamento da API
+
+## Executando a API
+
+Executando com Docker Compose
+
+Esta opção iniciará automaticamente os bancos de dados PostgreSQL e ambos os microserviços:
+
+```bash
+docker-compose up --build
+```
+
+### Endpoints disponíveis
+
+```bash
+# Lista todas as turmas
+GET http:/localhost:${SCHOOL_SYSTEM_PORT}/classes
+
+# Lista todos os alunos uma turma
+GET http://localhost:${SCHOOL_SYSTEM_PORT}/students?classId=${CLASS_ID}
+
+# Lista o boletim de um aluno
+GET http://localhost:${SCHOOL_SYSTEM_PORT}/students/${STUDENT_ID}/report
+```
+
+### Populando o Banco de Dados (Seeds)
+
+Para popular ambos os bancos com dados:
+
+```bash
+npm run seed:all
+```
+
+## Testes
+
+```bash
+# Executar testes unitários
+npm run test
+
+# Executar testes com watch mode
+npm run test:watch
+
+# Executar testes com cobertura
+npm run test:cov
+```
+
+## Capturas de tela
+
+### 1. Networks, microserviços e bancos de dados em execução
+
+![Containers em execução](./docs/images/docker.png)
+
+### 2. Listagem das turmas
+
+![Listagem das turmas](./docs/images/get-all-classes.png)
+
+### 3. Listagem dos alunos por turma
+
+![Listagem das turmas](./docs/images/get-students-by-class.png)
+
+### 4. Geração do boletim
+
+![Listagem das turmas](./docs/images/get-student-academic-record.png)
