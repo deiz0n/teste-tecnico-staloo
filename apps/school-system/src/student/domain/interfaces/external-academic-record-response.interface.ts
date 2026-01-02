@@ -1,7 +1,9 @@
-import { SubjectDto } from '../dto/subject.dto';
+import { ExternalSubjectInterface } from './external-subject.interface';
 
 export interface ExternalAcademicRecordInterface {
-  subject: SubjectDto[];
+  id: string;
+  studentId: string;
+  subject: ExternalSubjectInterface;
   finalGrade: number;
   passed: boolean;
 }

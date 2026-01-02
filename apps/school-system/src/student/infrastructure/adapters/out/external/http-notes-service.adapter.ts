@@ -9,6 +9,8 @@ import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { ExternalAcademicRecordInterface } from '../../../../domain/interfaces/external-academic-record-response.interface';
 import { ResponseServiceNotesDto } from '../../../../domain/dto/response-service-notes.dto';
+import { SubjectDto } from '../../../../domain/dto/subject.dto';
+import { ExamDto } from '../../../../domain/dto/exam.dto';
 
 @Injectable()
 export class HttpServiceNotesAdapter implements ServiceNotesClientPort {
@@ -48,14 +50,24 @@ export class HttpServiceNotesAdapter implements ServiceNotesClientPort {
       this.logger.log(
         `Received ${data.length} records from notes service for studentId: ${studentId}`,
       );
-      return data.map(
-        (item) =>
-          new ResponseServiceNotesDto(
-            item.subject,
-            item.finalGrade,
-            item.passed,
-          ),
-      );
+      return data.map((item) => {
+        const exams = item.subject.exams.map(
+          (exam) =>
+            new ExamDto(exam.id, parseFloat(exam.score), new Date(exam.date)),
+        );
+
+        const subject = new SubjectDto(
+          item.subject.name,
+          item.subject.workload,
+          exams,
+        );
+
+        return new ResponseServiceNotesDto(
+          [subject],
+          item.finalGrade,
+          item.passed,
+        );
+      });
     } catch (e) {
       const errorMessage =
         e instanceof Error
