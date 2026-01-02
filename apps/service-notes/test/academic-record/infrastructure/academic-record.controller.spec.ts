@@ -1,7 +1,7 @@
 import { TestingModule, Test } from '@nestjs/testing';
-import { GetStudentReportCardUseCase } from '../../../academic-record/application/ports/in/get-student-report-card.use-case';
-import { AcademicRecordModel } from '../../../academic-record/domain/academic-record.model';
-import { AcademicRecordController } from '../../../academic-record/infrastructure/adapters/in/academic-record.controller';
+import { GetStudentReportCardUseCase } from '../../../src/academic-record/application/ports/in/get-student-report-card.use-case';
+import { AcademicRecordModel } from '../../../src/academic-record/domain/academic-record.model';
+import { AcademicRecordController } from '../../../src/academic-record/infrastructure/adapters/in/academic-record.controller';
 import { randomUUID } from 'crypto';
 
 describe('AcademicRecordController', () => {

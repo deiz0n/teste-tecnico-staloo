@@ -1,7 +1,7 @@
 import { TestingModule, Test } from '@nestjs/testing';
-import { AcademicReportRepositoryPort } from '../../../academic-record/application/ports/out/academic-report.repository.port';
-import { GetStudentReportCardService } from '../../../academic-record/application/services/get-student-report.-card.service';
-import { AcademicRecordModel } from '../../../academic-record/domain/academic-record.model';
+import { AcademicReportRepositoryPort } from '../../../src/academic-record/application/ports/out/academic-report.repository.port';
+import { GetStudentReportCardService } from '../../../src/academic-record/application/services/get-student-report.-card.service';
+import { AcademicRecordModel } from '../../../src/academic-record/domain/academic-record.model';
 import { randomUUID } from 'crypto';
 
 describe('GetStudentReportCardService', () => {

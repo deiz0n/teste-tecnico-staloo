@@ -1,6 +1,6 @@
-import { AcademicRecordModel } from '../../../academic-record/domain/academic-record.model';
-import { ExamModel } from '../../../exam/domain/exam.model';
-import { SubjectModel } from '../../../subject/domain/subject.model';
+import { AcademicRecordModel } from '../../../src/academic-record/domain/academic-record.model';
+import { ExamModel } from '../../../src/exam/domain/exam.model';
+import { SubjectModel } from '../../../src/subject/domain/subject.model';
 
 describe('AcademicRecordModel', () => {
   const createMockExam = (score: number | string): ExamModel => {
