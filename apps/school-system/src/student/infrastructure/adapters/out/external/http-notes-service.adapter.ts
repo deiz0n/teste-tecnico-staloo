@@ -3,7 +3,7 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { ServiceNotesClientPort } from '../../../../application/ports/out/notes-service.client.port';
+import { ServiceNotesClientPort } from '../../../../application/ports/out/service-notes-client.port';
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';

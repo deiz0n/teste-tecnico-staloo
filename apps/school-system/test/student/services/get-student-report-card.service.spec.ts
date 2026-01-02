@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
-import { ServiceNotesClientPort } from '../../../src/student/application/ports/out/notes-service.client.port';
+import { ServiceNotesClientPort } from '../../../src/student/application/ports/out/service-notes-client.port';
 import { StudentRepositoryPort } from '../../../src/student/application/ports/out/student.repository.port';
 import { GetStudentReportCardService } from '../../../src/student/application/services/get-student-report-card.service';
 import { StudentModel } from '../../../src/student/domain/student.model';

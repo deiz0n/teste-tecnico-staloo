@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { AcademicRecordDto } from '../../domain/dto/academic-record.dto';
 import { StudentRepositoryPort } from '../ports/out/student.repository.port';
-import { ServiceNotesClientPort } from '../ports/out/notes-service.client.port';
+import { ServiceNotesClientPort } from '../ports/out/service-notes-client.port';
 import { GetStudentReportCardUseCase } from '../ports/in/get-student-report-card.use-case';
 
 @Injectable()
