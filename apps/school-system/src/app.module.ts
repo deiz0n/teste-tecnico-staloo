@@ -14,13 +14,18 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.get<string>('SCHOOL_SYSTEM_DB_HOST'),
-        port: configService.get<number>('SCHOOL_SYSTEM_DB_PORT'),
-        username: configService.get<string>('SCHOOL_SYSTEM_DB_USER'),
-        password: configService.get<string>('SCHOOL_SYSTEM_DB_PASSWORD'),
-        database: configService.get<string>('SCHOOL_SYSTEM_DB'),
+        host:
+          configService.get<string>('SCHOOL_SYSTEM_DB_HOST') ||
+          'school-system-database',
+        port: configService.get<number>('SCHOOL_SYSTEM_DB_PORT') || 5432,
+        username: configService.get<string>('SCHOOL_SYSTEM_DB_USER') || 'dudu1',
+        password:
+          configService.get<string>('SCHOOL_SYSTEM_DB_PASSWORD') || '1234567',
+        database:
+          configService.get<string>('SCHOOL_SYSTEM_DB') || 'school_system',
         entities: [ClassEntity, StudentEntity],
         synchronize: true,
+        logging: true,
       }),
     }),
     StudentModule,

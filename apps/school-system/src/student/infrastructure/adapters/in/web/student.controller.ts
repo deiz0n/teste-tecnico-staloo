@@ -8,13 +8,13 @@ import {
   Query,
 } from '@nestjs/common';
 import { GetStudentsByClassUseCase } from '../../../../application/ports/in/get-students-by-class.use-case';
-import { GenerateReportCardUseCase } from '../../../../application/ports/in/generate-report-card.use-case';
+import { GetStudentReportCardUseCase } from '../../../../application/ports/in/get-student-report-card.use-case';
 
 @Controller('students')
 export class StudentController {
   constructor(
     private readonly getStudentsByClassUseCase: GetStudentsByClassUseCase,
-    private readonly generateReportCardUseCase: GenerateReportCardUseCase,
+    private readonly getStudentReportCardUseCase: GetStudentReportCardUseCase,
   ) {}
 
   @Get()
@@ -31,7 +31,7 @@ export class StudentController {
   async generateReportCard(
     @Param('studentId', ParseUUIDPipe) studentId: string,
   ) {
-    const data = await this.generateReportCardUseCase.execute(studentId);
+    const data = await this.getStudentReportCardUseCase.execute(studentId);
     return {
       timestamp: new Date().toISOString(),
       date: data,
