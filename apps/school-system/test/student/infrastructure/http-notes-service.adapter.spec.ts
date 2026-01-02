@@ -49,24 +49,26 @@ describe('HttpServiceNotesAdapter', () => {
     it('should return mapped academic records when service returns data', async () => {
       const mockExternalData: ExternalAcademicRecordInterface[] = [
         {
-          subject: [
-            {
-              name: 'Matemática',
-              workload: 60,
-              exams: [{ id: randomUUID(), date: new Date(), score: 10 }],
-            },
-          ],
+          id: randomUUID(),
+          studentId: randomUUID(),
+          subject: {
+            id: randomUUID(),
+            name: 'Matemática',
+            workload: 60,
+            exams: [{ id: randomUUID(), date: '2025-10-10', score: '10' }],
+          },
           finalGrade: 8.5,
           passed: true,
         },
         {
-          subject: [
-            {
-              name: 'Português',
-              workload: 40,
-              exams: [{ id: randomUUID(), date: new Date(), score: 7 }],
-            },
-          ],
+          id: randomUUID(),
+          studentId: randomUUID(),
+          subject: {
+            id: randomUUID(),
+            name: 'Português',
+            workload: 40,
+            exams: [{ id: randomUUID(), date: '2025-10-08', score: '7' }],
+          },
           finalGrade: 7.0,
           passed: true,
         },
