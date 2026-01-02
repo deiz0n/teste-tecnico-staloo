@@ -7,7 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { StudentEntity } from './infrastructure/adapters/out/persistence/student.entity';
 import { GetStudentsByClassUseCase } from './application/ports/in/get-students-by-class.use-case';
 import { ServiceNotesClientPort } from './application/ports/out/service-notes-client.port';
-import { HttpServiceNotesAdapter } from './infrastructure/adapters/out/external/http-notes-service.adapter';
+import { HttpServiceNotesAdapter } from './infrastructure/adapters/out/external/http-service-notes.adapter';
 import { HttpModule } from '@nestjs/axios';
 import { GetStudentReportCardUseCase } from './application/ports/in/get-student-report-card.use-case';
 import { GetStudentReportCardService } from './application/services/get-student-report-card.service';

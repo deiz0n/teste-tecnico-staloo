@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { of, throwError } from 'rxjs';
 import { randomUUID } from 'crypto';
-import { HttpServiceNotesAdapter } from '../../../src/student/infrastructure/adapters/out/external/http-notes-service.adapter';
+import { HttpServiceNotesAdapter } from '../../../src/student/infrastructure/adapters/out/external/http-service-notes.adapter';
 import { ExternalAcademicRecordInterface } from '../../../src/student/domain/interfaces/external-academic-record-response.interface';
 import { ResponseServiceNotesDto } from '../../../src/student/domain/dto/response-service-notes.dto';
 
