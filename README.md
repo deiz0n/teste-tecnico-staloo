@@ -175,10 +175,10 @@ docker-compose up --build
 # Lista todas as turmas
 GET http:/localhost:${SCHOOL_SYSTEM_PORT}/classes
 
-# Lista todos os alunos uma turma
+# Lista todos os alunos de uma turma
 GET http://localhost:${SCHOOL_SYSTEM_PORT}/students?classId=${CLASS_ID}
 
-# Lista o boletim de um aluno
+# Gerar o boletim de um aluno
 GET http://localhost:${SCHOOL_SYSTEM_PORT}/students/${STUDENT_ID}/report
 ```
 
