@@ -19,7 +19,9 @@ export class HttpServiceNotesAdapter implements ServiceNotesClientPort {
     private readonly configService: ConfigService,
     private readonly httpService: HttpService,
   ) {
-    const host = this.configService.get<string>('SERVICE_NOTES_HOST');
+    const host =
+      this.configService.get<string>('SERVICE_NOTES_HOST') ||
+      'service-notes-api';
 
     this.notesServiceUrl = `http://${host}:3000/academic-records/student/`;
     this.logger.log(`Notes service URL configured: ${this.notesServiceUrl}`);

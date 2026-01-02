@@ -16,11 +16,15 @@ import { AcademicRecordEntity } from './academic-record/infrastructure/adapters/
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.get<string>('SERVICE_NOTES_DB_HOST'),
-        port: configService.get<number>('SERVICE_NOTES_DB_PORT'),
-        username: configService.get<string>('SERVICE_NOTES_DB_USER'),
-        password: configService.get<string>('SERVICE_NOTES_DB_PASSWORD'),
-        database: configService.get<string>('SERVICE_NOTES_DB'),
+        host:
+          configService.get<string>('SERVICE_NOTES_DB_HOST') ||
+          'service-notes-database',
+        port: configService.get<number>('SERVICE_NOTES_DB_PORT') || 5433,
+        username: configService.get<string>('SERVICE_NOTES_DB_USER') || 'dudu2',
+        password:
+          configService.get<string>('SERVICE_NOTES_DB_PASSWORD') || '1234567',
+        database:
+          configService.get<string>('SERVICE_NOTES_DB') || 'service_notes',
         entities: [ExamEntity, SubjectEntity, AcademicRecordEntity],
         synchronize: true,
         logging: true,
