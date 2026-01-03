@@ -142,17 +142,30 @@ cp .env.example .env
 Preencha as variáveis conforme necessário:
 
 ```env
-# Microservice School System
 SCHOOL_SYSTEM_PORT=3000
+SERVICE_NOTES_PORT=3001
+
+# Configuração Interna (Docker)
+# Hosts são os nomes dos serviços no docker-compose
+SCHOOL_SYSTEM_DB_HOST=school-system-database
+SERVICE_NOTES_DB_HOST=service-notes-database
+
+# Porta interna é SEMPRE 5432 para comunicação entre containers
 SCHOOL_SYSTEM_DB_PORT=5432
+SERVICE_NOTES_DB_PORT=5432
+
+# Credenciais
 SCHOOL_SYSTEM_DB_USER=dudu1
 SCHOOL_SYSTEM_DB_PASSWORD=1234567
+SCHOOL_SYSTEM_DB=school_system
 
-# Microservice Service Notes
-SERVICE_NOTES_PORT=3001
-SERVICE_NOTES_DB_PORT=5433
 SERVICE_NOTES_DB_USER=dudu2
 SERVICE_NOTES_DB_PASSWORD=1234567
+SERVICE_NOTES_DB=service_notes
+
+# Portas Externas (Apenas para acesso visual/admin do Host)
+SCHOOL_SYSTEM_DB_EXTERNAL_PORT=5434
+SERVICE_NOTES_DB_EXTERNAL_PORT=5433
 ```
 
 **⚠️ IMPORTANTE:**
@@ -163,31 +176,23 @@ SERVICE_NOTES_DB_PASSWORD=1234567
 
 Executando com Docker Compose
 
-Esta opção iniciará automaticamente os bancos de dados PostgreSQL e ambos os microserviços:
+Esta opção iniciará automaticamente os bancos de dados PostgreSQL, executará as seeds e iniciará ambos os microserviços:
 
 ```bash
-docker-compose up --build
+docker-compose up -d --build
 ```
 
 ### Endpoints disponíveis
 
 ```bash
 # Lista todas as turmas
-GET http:/localhost:${SCHOOL_SYSTEM_PORT}/classes
+GET http://localhost:${SCHOOL_SYSTEM_PORT}/classes
 
 # Lista todos os alunos de uma turma
 GET http://localhost:${SCHOOL_SYSTEM_PORT}/students?classId=${CLASS_ID}
 
 # Gerar o boletim de um aluno
 GET http://localhost:${SCHOOL_SYSTEM_PORT}/students/${STUDENT_ID}/report
-```
-
-### Populando o Banco de Dados (Seeds)
-
-Para popular ambos os bancos com dados:
-
-```bash
-npm run seed:all
 ```
 
 ## Testes
