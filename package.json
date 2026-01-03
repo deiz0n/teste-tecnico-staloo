@@ -18,9 +18,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/school-system/test/jest-e2e.json",
-    "seed:school": "ts-node -r tsconfig-paths/register apps/school-system/seed.ts",
-    "seed:notes-service": "ts-node -r tsconfig-paths/register apps/service-notes/seed.ts",
-    "seed:all": "npm run seed:school && npm run seed:notes-service"
+    "seed:school-system": "ts-node -r tsconfig-paths/register apps/school-system/seed.ts",
+    "seed:service-notes": "ts-node -r tsconfig-paths/register apps/service-notes/seed.ts",
+    "seed:all": "npm run seed:school-system && npm run seed:service-notes"
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.1",
