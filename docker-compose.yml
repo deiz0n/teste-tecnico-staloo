@@ -1,15 +1,3 @@
-networks:
-  school-system-network:
-    driver: bridge
-  service-notes-network:
-    driver: bridge
-  network-microservices:
-    driver: bridge
-
-volumes:
-  school-system-data:
-  service-notes-data:
-
 services:
   school-system-database:
     container_name: school-system-database-pg
@@ -17,14 +5,23 @@ services:
     environment:
       POSTGRES_USER: ${SCHOOL_SYSTEM_DB_USER}
       POSTGRES_PASSWORD: ${SCHOOL_SYSTEM_DB_PASSWORD}
-      POSTGRES_DB: school_system
+      POSTGRES_DB: ${SCHOOL_SYSTEM_DB}
       POSTGRES_HOST_AUTH_METHOD: trust
     ports:
-      - "${SCHOOL_SYSTEM_DB_PORT}:5432"
+      - "${SCHOOL_SYSTEM_DB_EXTERNAL_PORT}:5432"
     volumes:
       - school-system-data:/var/lib/postgresql/data
     networks:
       - school-system-network
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${SCHOOL_SYSTEM_DB_USER} -d ${SCHOOL_SYSTEM_DB}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   school-system-api:
     build:
@@ -37,13 +34,11 @@ services:
     env_file:
       - .env
     environment:
-      - SCHOOL_SYSTEM_DB_PORT=5432
-      - SCHOOL_SYSTEM_DB_HOST=school-system-database
-      - SCHOOL_SYSTEM_DB=school_system
-      - SCHOOL_SYSTEM_HOST_AUTH_METHOD=trust
+      - APP_NAME=school-system
     depends_on:
-      - school-system-database
-    command: npm run start:dev school-system
+      school-system-database:
+        condition: service_healthy
+    command: npm run docker:entrypoint
     networks:
       - school-system-network
       - network-microservices
@@ -57,14 +52,23 @@ services:
     environment:
       POSTGRES_USER: ${SERVICE_NOTES_DB_USER}
       POSTGRES_PASSWORD: ${SERVICE_NOTES_DB_PASSWORD}
-      POSTGRES_DB: service_notes
+      POSTGRES_DB: ${SERVICE_NOTES_DB}
       POSTGRES_HOST_AUTH_METHOD: trust
     ports:
-      - "${SERVICE_NOTES_DB_PORT}:5432"
+      - "${SERVICE_NOTES_DB_EXTERNAL_PORT}:5432"
     volumes:
       - service-notes-data:/var/lib/postgresql/data
     networks:
       - service-notes-network
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${SERVICE_NOTES_DB_USER} -d ${SERVICE_NOTES_DB}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   service-notes-api:
     build:
@@ -77,16 +81,27 @@ services:
     env_file:
       - .env
     environment:
-      - SERVICE_NOTES_DB_PORT=5432
-      - SERVICE_NOTES_DB_HOST=service-notes-database
-      - SERVICE_NOTES_DB=service_notes
-      - SERVICE_NOTES_HOST_AUTH_METHOD=trust
+      - APP_NAME=service-notes
     depends_on:
-      - service-notes-database
-    command: npm run start:dev service-notes
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+      service-notes-database:
+        condition: service_healthy
+    command: npm run docker:entrypoint
     networks:
       - service-notes-network
       - network-microservices
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+# ... (networks e volumes permanecem iguais)
+networks:
+  school-system-network:
+    driver: bridge
+  service-notes-network:
+    driver: bridge
+  network-microservices:
+    driver: bridge
+
+volumes:
+  school-system-data:
+  service-notes-data:
