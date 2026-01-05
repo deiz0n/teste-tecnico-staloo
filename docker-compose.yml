@@ -93,7 +93,6 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
 
-# ... (networks e volumes permanecem iguais)
 networks:
   school-system-network:
     driver: bridge
